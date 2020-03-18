@@ -23,7 +23,10 @@ async def on_ready():
 async def on_message(message):
     print(message.content)
 
-    if essage.content.startswith('r!reload'):
+    if message.content.startswith('r!reload'):
+        search.clear()
+        print(len(search))
+
         f = open("search.txt", mode='r', encoding='utf-8')
         lines = f.readlines()
         for line in lines:
@@ -56,5 +59,6 @@ async def on_message(message):
             await message.delete()
             return
 
-access_token = os.environ["BOT_TOKEN"]
-bot.run(access_token)
+#access_token = os.environ["BOT_TOKEN"]
+#bot.run(access_token)
+bot.run('Njg5ODY4MzIxNTM2ODY4Mzkw.XnKCdQ.EIJsWj51LxMxCj9jJd9-q36Txxc')
