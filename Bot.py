@@ -3,18 +3,21 @@ import re
 import os
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix = 'r!')
-search = [""]
+bot = commands.Bot(command_prefix = 'r!', encoding='utf-8')
+search = []
 
 @bot.event
 async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=discord.Game('통제! 검열!'))
     print('언론! 검열! 통제!')
-    f = open("search.txt", 'r')
-    while True:
-        line = f.readline()
-        if not line: break
-        search[i] = line
+    f = open("search.txt", mode='r', encoding='utf-8')
+    lines = f.readlines()
+    for line in lines:
+        line = re.sub('\n', '', line)
+        search.append(line)
+
+    print(len(search))
+    print(search[0])
     f.close()
 
 @bot.event
