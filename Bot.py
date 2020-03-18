@@ -59,6 +59,5 @@ async def on_message(message):
             await message.delete()
             return
 
-#access_token = os.environ["BOT_TOKEN"]
-#bot.run(access_token)
-bot.run('Njg5ODY4MzIxNTM2ODY4Mzkw.XnKCdQ.EIJsWj51LxMxCj9jJd9-q36Txxc')
+access_token = os.environ["BOT_TOKEN"]
+bot.run(access_token)
