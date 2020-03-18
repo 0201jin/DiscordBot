@@ -21,8 +21,6 @@ async def on_ready():
 
 @bot.event
 async def on_message(message):
-    print(message.content)
-
     if message.content.startswith('r!reload'):
         search.clear()
         print(len(search))
