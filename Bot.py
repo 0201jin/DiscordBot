@@ -53,6 +53,7 @@ async def on_message(message):
             return
 
     chat = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》1234567890qwertyuiopasdfghjklzxcvbnm]', '', message.content.replace(" ", "").lower())
+    chat = re.sub(korean, '', chat)
 
     for i in range(0, len(search), 1):
         if search[i] in chat:
