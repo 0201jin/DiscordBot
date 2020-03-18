@@ -17,7 +17,6 @@ async def on_ready():
         search.append(line)
 
     print(len(search))
-    print(search[0])
     f.close()
 
 @bot.event
