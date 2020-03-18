@@ -23,6 +23,18 @@ async def on_ready():
 async def on_message(message):
     print(message.content)
 
+    if message.content == 'r!reload':
+        f = open("search.txt", mode='r', encoding='utf-8')
+        lines = f.readlines()
+        for line in lines:
+            line = re.sub('\n', '', line)
+            search.append(line)
+
+        print(len(search))
+        f.close()
+        await message.channel.send('data reload ')
+        return
+
     for i in range(0, len(search), 1):
         if search[i] in message.content:
             await message.delete()
