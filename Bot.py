@@ -1,62 +1,42 @@
 import discord
 import re
 import os
+import csv
+import threading
+import datetime
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix = 'r!', encoding='utf-8')
-search = []
-
-@bot.event
-async def on_ready():
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game('통제! 검열!'))
-    print('언론! 검열! 통제!')
-    f = open("search.txt", mode='r', encoding='utf-8')
-    lines = f.readlines()
-    for line in lines:
-        line = re.sub('\n', '', line)
-        search.append(line)
-
-    print(len(search))
-    f.close()
+text_channel_list = []
+bot = commands.Bot(command_prefix = '')
 
 @bot.event
 async def on_message(message):
-    if message.content.startswith('r!reload'):
-        search.clear()
-        print(len(search))
+    if message.content.find("슷칼봇 주식 정보") != -1:
+       chat = message.content.replace("`", "").split()
 
-        f = open("search.txt", mode='r', encoding='utf-8')
-        lines = f.readlines()
-        for line in lines:
-            line = re.sub('\n', '', line)
-            search.append(line)
+       date = chat[4] + ' ' + chat[5] + ' ' + chat[6] + ' ' + chat[7] + ' ' + chat[8]
+       #19 24 29 34 39 44 49 54 59 64 69 74 79 84 89
+       
+       f = open('SkileBotData.csv','r', encoding = 'utf-8')
+       rdr = csv.reader(f)
+ 
+       for line in rdr:
+           if line[0].find(date) != -1:
+               print("중복!")
+               return None
+ 
+       f.close()
 
-        print(len(search))
-        f.close()
-        await message.channel.send('data reload ')
-        return
+       f = open('SkileBotData.csv', 'a', newline='')
+       wr = csv.writer(f)
+       wr.writerow([date, chat[19], chat[24], chat[29], chat[34], chat[39], chat[44], chat[49], chat[54], chat[59], chat[64], chat[69], chat[74], chat[79], chat[84], chat[89], 0])
+       f.close()
+       print("기록!")
 
-    for i in range(0, len(search), 1):
-        if search[i] in message.content:
-            await message.delete()
-            return
-
-    korean = re.compile('[\u3131-\u3163]+')
-    chat = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》1234567890]', '', message.content.replace(" ", "").lower())
-    chat = re.sub(korean, '', chat)
-
-    for i in range(0, len(search), 1):
-        if search[i] in chat:
-            await message.delete()
-            return
-
-    chat = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》1234567890qwertyuiopasdfghjklzxcvbnm]', '', message.content.replace(" ", "").lower())
-    chat = re.sub(korean, '', chat)
-
-    for i in range(0, len(search), 1):
-        if search[i] in chat:
-            await message.delete()
-            return
-
+@bot.event
+async def on_ready():
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game('데이터 수집 중'))
+    print('시작')
+    
 access_token = os.environ["BOT_TOKEN"]
 bot.run(access_token)
